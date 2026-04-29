@@ -6,7 +6,7 @@
 /*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 18:45:46 by gshekari          #+#    #+#             */
-/*   Updated: 2026/04/29 18:16:54 by gshekari         ###   ########.fr       */
+/*   Updated: 2026/04/29 19:19:55 by gshekari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,19 @@ Fixed::Fixed()
 	std::cout << "Default constructor called" << std::endl;
 	this->fixedPoint = 0;
 }
+
+Fixed::Fixed(const int n)
+{
+	std::cout << "Int constructor called" << std::endl;
+	this->fixedPoint = n * 256;
+}
+
+Fixed::Fixed(const float n)
+{
+	std::cout << "Float constructor called" << std::endl;
+	this->fixedPoint = std::roundf(n * 256);
+}
+
 Fixed::~Fixed()
 {
 	std::cout << "Destructor called" << std::endl;
@@ -47,4 +60,14 @@ void Fixed::setRawBits(int const raw)
 {
 	std::cout << "setRawBits member function called" << std::endl;
 	this->fixedPoint = raw;
+}
+
+float Fixed::toFloat( void ) const
+{
+
+}
+
+int Fixed::toInt( void ) const
+{
+
 }
