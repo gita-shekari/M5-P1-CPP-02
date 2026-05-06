@@ -1,0 +1,201 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Fixed.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/22 18:45:46 by gshekari          #+#    #+#             */
+/*   Updated: 2026/05/06 21:33:12 by gshekari         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "Fixed.hpp"
+
+const int Fixed::fractional = 8;
+
+/**************constructors and destructor*******************/
+
+Fixed::Fixed()
+{
+	this->fixedPoint = 0;
+}
+
+Fixed::Fixed(const int n)
+{
+	this->fixedPoint = n * 256;
+}
+
+Fixed::Fixed(const float n)
+{
+	this->fixedPoint = roundf(n * 256);
+}
+
+Fixed::~Fixed()
+{
+}
+
+Fixed::Fixed(const Fixed &obj)
+{
+	this->fixedPoint = obj.fixedPoint;
+}
+
+/******************Copy assignment operator ************************/
+Fixed &Fixed::operator=(const Fixed &obj)
+{
+	if (this != &obj)
+		this->fixedPoint = obj.fixedPoint;
+	return *this;
+}
+/***********************getter setter************************/
+int Fixed::getRawBits(void) const
+{
+	return (this->fixedPoint);
+}
+void Fixed::setRawBits(int const raw)
+{
+	this->fixedPoint = raw;
+}
+
+/***********************conversions************************/
+float Fixed::toFloat( void ) const
+{
+	return ((float)this->fixedPoint / (1 << fractional));
+}
+
+int Fixed::toInt( void ) const
+{
+	return (this->fixedPoint >> fractional);
+}
+
+/***********************comparison operators***************/
+
+
+bool Fixed::operator>(const Fixed &obj) const
+{
+	return (fixedPoint > obj.fixedPoint);
+}
+
+bool Fixed::operator<(const Fixed &obj) const
+{
+	return (fixedPoint < obj.fixedPoint);
+}
+
+bool Fixed::operator>=(const Fixed &obj) const
+{
+	return (fixedPoint >= obj.fixedPoint);
+}
+
+bool Fixed::operator<=(const Fixed &obj) const
+{
+	return (fixedPoint <= obj.fixedPoint);
+}
+
+bool Fixed::operator==(const Fixed &obj) const
+{
+	return (fixedPoint == obj.fixedPoint);
+}
+
+bool Fixed::operator!=(const Fixed &obj) const
+{
+	return (fixedPoint != obj.fixedPoint);
+}
+
+/***********************arithmetic operators***************/
+
+
+Fixed Fixed::operator+(const Fixed &other)
+{
+	Fixed result;
+	result.setRawBits(fixedPoint + other.fixedPoint);
+	return result;
+}
+
+Fixed Fixed::operator-(const Fixed &other)
+{
+	Fixed result;
+	result.setRawBits(fixedPoint - other.fixedPoint);
+	return result;
+}
+
+Fixed Fixed::operator*(const Fixed &other)
+{
+	Fixed result;
+	long temp = (fixedPoint * other.fixedPoint);
+	result.setRawBits(temp >> fractional);
+	return result;
+}
+
+Fixed Fixed::operator/(const Fixed &other)
+{
+	Fixed result;
+	long temp = (fixedPoint << fractional);
+	result.setRawBits(temp / other.fixedPoint);
+	return result;
+}
+
+/***********************increment and decrement************************/
+
+Fixed &Fixed::operator++()
+{
+	fixedPoint += 1;
+	return *this;
+}
+
+Fixed Fixed::operator++(int)
+{
+	Fixed temp(*this);
+	fixedPoint += 1;
+	return temp;
+}
+
+Fixed &Fixed::operator--()
+{
+	fixedPoint -= 1;
+	return *this;
+}
+
+Fixed Fixed::operator--(int)
+{
+	Fixed temp(*this);
+	fixedPoint -= 1;
+	return temp;
+}
+
+/***********************min max************************/
+Fixed &Fixed::min(Fixed &num1, Fixed &num2)
+{
+	if (num1 < num2)
+		return num1;
+	return num2;
+}
+
+Fixed &Fixed::max(Fixed &num1, Fixed &num2)
+{
+	if (num1 > num2)
+		return num1;
+	return num2;
+}
+
+/***********************min max const************************/
+
+const Fixed &Fixed::min(const Fixed &num1, const Fixed &num2)
+{
+	if (num1 < num2)
+		return num1;
+	return num2;
+}
+const Fixed &Fixed::max(const Fixed &num1, const Fixed &num2)
+{
+	if (num1 > num2)
+		return num1;
+	return num2;
+}
+
+/***********************stream operator************************/
+
+std::ostream &operator<<(std::ostream &out,const Fixed &obj)
+{
+	out << obj.toFloat();
+	return out;
+}
