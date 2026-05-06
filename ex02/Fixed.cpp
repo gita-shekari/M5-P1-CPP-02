@@ -6,7 +6,7 @@
 /*   By: gshekari <gshekari@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/22 18:45:46 by gshekari          #+#    #+#             */
-/*   Updated: 2026/04/30 20:26:59 by gshekari         ###   ########.fr       */
+/*   Updated: 2026/05/06 17:25:10 by gshekari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ Fixed Fixed::operator-(const Fixed &other)
 Fixed Fixed::operator*(const Fixed &other)
 {
 	Fixed result;
-	long temp = (long)fixedPoint * other.fixedPoint;
+	long temp = (fixedPoint * other.fixedPoint);
 	result.setRawBits(temp >> fractional);
 	return result;
 }
@@ -137,7 +137,7 @@ Fixed Fixed::operator*(const Fixed &other)
 Fixed Fixed::operator/(const Fixed &other)
 {
 	Fixed result;
-	long temp = ((long)fixedPoint << fractional);
+	long temp = (fixedPoint << fractional);
 	result.setRawBits(temp / other.fixedPoint);
 	return result;
 }
